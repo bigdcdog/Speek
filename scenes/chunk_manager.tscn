@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://bm1x6ywt7d3ui"]
 
-[ext_resource type="Script" uid="uid://djuxb08dcuuuy" path="res://scripts/slime_chunk_manager.gd" id="1_0oixa"]
+[ext_resource type="Script" uid="uid://djuxb08dcuuuy" path="res://scripts/chunk_manager.gd" id="1_0oixa"]
 [ext_resource type="Script" uid="uid://ny4j5xlefqis" path="res://scripts/target.gd" id="1_1wyt4"]
 [ext_resource type="Script" uid="uid://2y8rnp2f3q8o" path="res://scripts/camera_holder.gd" id="2_ixyoq"]
-[ext_resource type="Script" uid="uid://bjq6kr8n3cfy3" path="res://scripts/navigation_controller.gd" id="4_asd8b"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_g4v7s"]
 
@@ -23,6 +22,3 @@ collision_mask = 2
 script = ExtResource("2_ixyoq")
 
 [node name="camera" type="Camera3D" parent="target/camera_holder" unique_id=71913040]
-
-[node name="navigation_controller" type="Node3D" parent="." unique_id=767565943]
-script = ExtResource("4_asd8b")
