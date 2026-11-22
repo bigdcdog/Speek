@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cb12x0f4n8e4s"]
+
+[ext_resource type="PackedScene" uid="uid://cst3li16tkkxa" path="res://scenes/environment.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://bm1x6ywt7d3ui" path="res://scenes/chunk_manager.tscn" id="2_sugp2"]
+
+[node name="main" type="Node3D" unique_id=1526849415]
+
+[node name="slime_chunk_manager" parent="." unique_id=1375283603 instance=ExtResource("2_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="environment" parent="." unique_id=74166882 instance=ExtResource("1_0wfyh")]

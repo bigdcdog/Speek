@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://crsagl27qfd2w"]
 
-[ext_resource type="Script" uid="uid://6mu1nm2ilynb" path="res://scripts/slime_chunk.gd" id="1_xjmp6"]
+[ext_resource type="Script" uid="uid://6mu1nm2ilynb" path="res://scripts/slime_chunk.gd" id="1_jas4a"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_g4v7s"]
+radius = 0.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_g4v7s"]
+radius = 0.2
+height = 0.4
 
-[node name="slime chunk" type="RigidBody3D" unique_id=239859342]
-script = ExtResource("1_xjmp6")
+[node name="chunk" type="RigidBody3D" unique_id=239859342 groups=["speek"]]
+contact_monitor = true
+max_contacts_reported = 8
+script = ExtResource("1_jas4a")
 
 [node name="collision" type="CollisionShape3D" parent="." unique_id=334336060]
 shape = SubResource("SphereShape3D_g4v7s")
