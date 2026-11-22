@@ -30,19 +30,27 @@ glow_enabled = true
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(20, 1, 20)
+size = Vector3(30, 1, 30)
 material = SubResource("StandardMaterial3D_fm4en")
 
 [node name="wall" type="CSGBox3D" parent="terrain" unique_id=95946542]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.4, 11)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
 size = Vector3(4, 4, 1)
 material = SubResource("StandardMaterial3D_fm4en")
 
+[node name="wall3" type="CSGBox3D" parent="terrain" unique_id=921635575]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 2.4, 9.5)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(1, 4, 4)
+material = SubResource("StandardMaterial3D_fm4en")
+
 [node name="floating" type="CSGBox3D" parent="terrain" unique_id=1492414362]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5, 2, 5)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5, 2.01, -3)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
@@ -50,23 +58,31 @@ size = Vector3(4, 4, 1)
 material = SubResource("StandardMaterial3D_fm4en")
 
 [node name="wall2" type="CSGBox3D" parent="terrain" unique_id=1868521513]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 4.5, 4)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(4, 4, 1)
+size = Vector3(5, 8, 1)
+material = SubResource("StandardMaterial3D_fm4en")
+
+[node name="wall4" type="CSGBox3D" parent="terrain" unique_id=114517272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 4.5, 1.361)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(5, 8, 1)
 material = SubResource("StandardMaterial3D_fm4en")
 
 [node name="ramp" type="CSGBox3D" parent="terrain" unique_id=482698749]
-transform = Transform3D(-0.8660254, 0.49999997, 0, -0.49999997, -0.8660254, 0, 0, 0, 1, 5.5, 1, 3)
+transform = Transform3D(-0.8102467, 0.58608884, 0, -0.58608884, -0.8102467, 0, 0, 0, 1, 5.228718, 1.5505335, 9)
 use_collision = true
 collision_layer = 3
 collision_mask = 3
-size = Vector3(4, 1, 3)
+size = Vector3(5, 1, 3)
 material = SubResource("StandardMaterial3D_fm4en")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="terrain" unique_id=531374872]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -4)
 use_collision = true
 collision_layer = 3
 collision_mask = 3

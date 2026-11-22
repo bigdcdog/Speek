@@ -4,7 +4,7 @@ extends Node3D
 
 const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 
-@export var chunk_count := 100
+@export var chunk_count := 500
 @export var chunk_size := 500
 @export var spawn_position := Vector3(3.0, 3.0, 3.0)
 

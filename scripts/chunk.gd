@@ -16,7 +16,7 @@ func calculate_integrity(state: PhysicsDirectBodyState3D) -> void:
 	integrity = 0
 	grounded = false
 	var integrity_affect = 0
-	for collision in range(0, get_colliding_bodies().size() - 1):
+	for collision in range(state.get_contact_count()):
 		var collider = state.get_contact_collider_object(collision)
 		
 		if collider == null:
