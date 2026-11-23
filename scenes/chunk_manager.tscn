@@ -8,6 +8,8 @@
 
 [node name="chunk_manager" type="Node3D" unique_id=1375283603]
 script = ExtResource("1_0oixa")
+near_colour = Color(1.8650665e-07, 0.27768454, 2.6471912e-07, 1)
+far_colour = Color(0.31931123, 8.5576474e-05, 0.32904083, 1)
 
 [node name="target" type="CharacterBody3D" parent="." unique_id=790738553]
 collision_layer = 2
