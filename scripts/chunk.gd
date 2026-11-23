@@ -69,22 +69,19 @@ func mid(state: PhysicsDirectBodyState3D) -> void:
 	var direction = target_direction
 	var distance = target_distance
 	var multiplier = pow(clamp((distance - 0.5) / (max_distance - 0.5), 0.0, 1.0), 0.5)
-
-	if supporting and target_distance < radius:
-		state.linear_velocity *= 0.5
-		state.apply_central_force(direction * multiplier * strength)
+	
+	if supporting and target_distance < radius:#if supporting but too far move towards target
+		state.linear_velocity *= 0.0
 	elif supported:
-		state.linear_velocity *= 0.5
-		state.apply_central_force(direction * multiplier * strength)
-
+		pass#idk i need a break
 func near(state: PhysicsDirectBodyState3D) -> void:
 	var direction = target_direction
 	var distance = target_distance
 	var multiplier = pow(clamp((distance - 0.5) / (max_distance - 0.5), 0.0, 1.0), 0.5)
-	
+
 	if supporting and target_distance < radius:
-		state.linear_velocity.x *= 0.5
-		state.linear_velocity.z *= 0.5
+		state.linear_velocity *= 0.5
+		state.apply_central_force(direction * multiplier * strength)
 	elif supported:
 		state.linear_velocity *= 0.5
 		state.apply_central_force(direction * multiplier * strength)
