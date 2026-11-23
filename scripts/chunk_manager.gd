@@ -4,8 +4,8 @@ extends Node3D
 
 const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 
-@export var chunk_count := 500
-@export var chunk_size := 500
+@export var chunk_count := 100
+@export var chunk_size := 10
 @export var spawn_position := Vector3(3.0, 3.0, 3.0)
 
 var chunks: Array = []
@@ -27,5 +27,13 @@ func _physics_process(_delta: float) -> void:
 	chunks.sort_custom(func(a, b): return a.global_position.distance_squared_to(target.global_position) < b.global_position.distance_squared_to(target.global_position))
 	
 	for chunk_num in chunks.size():
-		chunks[chunk_num].target_position = target.global_position
-		chunks[chunk_num].nearest = true 
+		if chunk_num >= chunk_size:
+			chunks[chunk_num].target_direction = chunks[chunk_num].global_position.direction_to(chunks[int(float(chunk_num) / chunk_size)].global_position)
+			chunks[chunk_num].target_distance = chunks[chunk_num].global_position.distance_squared_to(chunks[int(float(chunk_num) / chunk_size)].global_position)
+			chunks[chunk_num].colour = Color.RED.lerp(Color.BLUE, clamp(float(chunk_num) / (chunks.size() - 1), 0.0, 1.0))
+			chunks[chunk_num].nearest = false
+		else:
+			chunks[chunk_num].target_direction = chunks[chunk_num].global_position.direction_to(target.global_position)
+			chunks[chunk_num].target_distance = chunks[chunk_num].global_position.distance_squared_to(target.global_position)
+			chunks[chunk_num].colour = Color.RED
+			chunks[chunk_num].nearest = true 
