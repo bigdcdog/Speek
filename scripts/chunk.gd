@@ -18,7 +18,7 @@ extends RigidBody3D
 @export var slide := 0.8
 @export var slack := 1.1
 
-@export_range(0.0, 1.0) var link_stiffness := 0.6
+@export_range(0.0, 1.0) var link_stiffness := 0.1
 @export_range(0.0, 1.0) var link_damping := 0.8
 @export var max_pull := 300.0
 @export var recall_distance := 8.0

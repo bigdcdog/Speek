@@ -32,14 +32,8 @@ func spawn_chunk(spawn_at: Vector3, chunk_name: int) -> void:
 	chunk.name = "chunk %s" % chunk_name
 	add_child(chunk)
 	var side: int = int(ceil(pow(float(chunk_count), 1.0 / 3.0)))
-	var grid_position: Vector3 = Vector3(
-		chunk_name % side,
-		(chunk_name / side) % side,
-		chunk_name / (side * side)
-	)
-	var offset: Vector3 = (
-		grid_position - Vector3.ONE * float(side - 1) * 0.5
-	) * chunk.radius * spawn_spacing_multiplier
+	var grid_position: Vector3 = Vector3(chunk_name % side,fposmod(chunk_name / float(side), float(side)),chunk_name / float(side * side))
+	var offset: Vector3 = (grid_position - Vector3.ONE * float(side - 1) * 0.5) * chunk.radius * spawn_spacing_multiplier
 	chunk.position = spawn_at + offset
 	chunks.append(chunk)
 
@@ -54,9 +48,7 @@ func update_mesh() -> void:
 			if not is_instance_valid(link):
 				chunk.unlink_from(link)
 				continue
-			var distance: float = chunk.global_position.distance_to(
-				link.global_position
-			)
+			var distance: float = chunk.global_position.distance_to(link.global_position)
 			if distance > break_distance:
 				chunk.unlink_from(link)
 	var degrees: Dictionary = {}
@@ -69,19 +61,12 @@ func update_mesh() -> void:
 			var b = chunks[j]
 			if a.links.has(b):
 				continue
-			var distance: float = a.global_position.distance_to(
-				b.global_position
-			)
+			var distance: float = a.global_position.distance_to(b.global_position)
 			if distance <= create_distance:
-				candidates.append({
-					"a": a,
-					"b": b,
-					"distance": distance
-				})
+				candidates.append({"a": a,"b": b,"distance": distance})
 	candidates.sort_custom(
 		func(a: Dictionary, b: Dictionary) -> bool:
-			return a["distance"] < b["distance"]
-	)
+			return a["distance"] < b["distance"])
 	for candidate in candidates:
 		var a = candidate["a"]
 		var b = candidate["b"]
@@ -105,14 +90,8 @@ func update_integrity() -> void:
 		for chunk in chunks:
 			var strongest := 0
 			for link in chunk.links:
-				strongest = maxi(
-					strongest,
-					int(values.get(link, 0))
-				)
-			next_values[chunk] = maxi(
-				chunk.wall_integrity,
-				strongest - chunk.integrity_loss
-			)
+				strongest = maxi(strongest,int(values.get(link, 0)))
+			next_values[chunk] = maxi(chunk.wall_integrity,strongest - chunk.integrity_loss)
 		values = next_values
 	for chunk in chunks:
 		chunk.integrity = int(values.get(chunk, 0))
@@ -127,33 +106,22 @@ func update_integrity() -> void:
 func assign_targets() -> void:
 	chunks.sort_custom(
 		func(a, b) -> bool:
-			var distance_a: float = a.global_position.distance_squared_to(
-				target.global_position
-			)
-			var distance_b: float = b.global_position.distance_squared_to(
-				target.global_position
-			)
+			var distance_a: float = a.global_position.distance_squared_to(target.global_position)
+			var distance_b: float = b.global_position.distance_squared_to(target.global_position)
 			if is_equal_approx(distance_a, distance_b):
 				return a.get_instance_id() < b.get_instance_id()
-			return distance_a < distance_b
-	)
+			return distance_a < distance_b)
 	var near_end: int = mini(chunks_near, chunks.size())
 	var mid_end: int = mini(chunks_near + chunks_mid, chunks.size())
 	for chunk_num in range(chunks.size()):
 		var chunk = chunks[chunk_num]
 		chunk.rank = chunk_num
 		if chunk_num >= mid_end:
-			var target_index: int = int(
-				float(chunk_num) / float(chunk_mid_size)
-			)
+			var target_index: int = int(float(chunk_num) / float(chunk_mid_size))
 			target_index = clampi(target_index, 0, chunk_num - 1)
 			var destination = chunks[target_index]
-			chunk.target_direction = chunk.global_position.direction_to(
-				destination.global_position
-			)
-			chunk.target_distance = chunk.global_position.distance_to(
-				destination.global_position
-			)
+			chunk.target_direction = chunk.global_position.direction_to(destination.global_position)
+			chunk.target_distance = chunk.global_position.distance_to(destination.global_position)
 			chunk.colour = far_colour
 			chunk.group = chunk.Group.FAR
 		elif chunk_num >= near_end:
@@ -161,55 +129,28 @@ func assign_targets() -> void:
 			target_index = clampi(target_index, 0, chunk_num - 1)
 			var destination = chunks[target_index]
 			chunk.target_direction = chunk.global_position.direction_to(destination.global_position)
-			
-			chunk.target_distance = chunk.global_position.distance_to(
-				destination.global_position
-			)
-			
-			chunk.colour = near_colour.lerp(
-				far_colour,
-				clampf(
-					float(chunk_num) / maxf(float(chunks.size() - 1), 1.0),
-					0.0,
-					1.0
-				)
-			)
-			
+			chunk.target_distance = chunk.global_position.distance_to(destination.global_position)
+			chunk.colour = near_colour.lerp(far_colour,clampf(float(chunk_num) / maxf(float(chunks.size() - 1), 1.0),0.0,1.0))
 			chunk.group = chunk.Group.MID
-		
 		else:
-			chunk.target_direction = chunk.global_position.direction_to(
-				target.global_position
-			)
-			
-			chunk.target_distance = chunk.global_position.distance_to(
-				target.global_position
-			)
-			
+			chunk.target_direction = chunk.global_position.direction_to(target.global_position)
+			chunk.target_distance = chunk.global_position.distance_to(target.global_position)
 			chunk.colour = near_colour
 			chunk.group = chunk.Group.NEAR
-		
 		chunk.pick_base()
-
 
 func _ready() -> void:
 	if chunks_near + chunks_mid + chunks_far != chunk_count:
-		push_error(
-			"NEAR, MID and FAR counts must add up to chunk_count."
-		)
+		push_error("NEAR, MID and FAR counts must add up to chunk_count.")
 		return
-	
 	if chunk_mid_size <= 0:
 		push_error("chunk_mid_size must be greater than zero.")
 		return
-
 	for i in range(chunk_count):
 		spawn_chunk(spawn_position, i)
-
 	update_mesh()
 	assign_targets()
 	update_integrity()
-
 
 func _physics_process(delta: float) -> void:
 	topology_timer += delta
