@@ -3,11 +3,15 @@
 [ext_resource type="Texture2D" uid="uid://b1ls2my73xjd8" path="res://resources/textures/Gray/Prototype_Grid_Gray_05-128x128.png" id="1_bc5iu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fm4en"]
+albedo_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 albedo_texture = ExtResource("1_bc5iu")
+albedo_texture_force_srgb = true
 uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bc5iu"]
+albedo_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 albedo_texture = ExtResource("1_bc5iu")
+albedo_texture_force_srgb = true
 uv1_triplanar = true
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bc5iu"]
