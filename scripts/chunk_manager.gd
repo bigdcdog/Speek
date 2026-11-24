@@ -36,6 +36,7 @@ func spawn_chunk(chunk_name: int) -> void:
 	add_child(chunk)
 	chunk.position = spawn_position
 	chunk.collision.shape = chunk.collision.shape.duplicate()
+	chunk.radius = chunk_radius
 	chunk.collision.shape.radius = chunk_radius
 	chunk.mesh.mesh.radius = chunk_radius
 	chunk.mesh.mesh.height = chunk_radius * 2
@@ -119,7 +120,7 @@ func assign_targets() -> void:
 			var target_chunk = chunks[target_index]
 			chunk.target_direction = chunk.global_position.direction_to(target_chunk.global_position)
 			chunk.target_distance = chunk.global_position.distance_to(target_chunk.global_position)
-			chunk.colour = near_colour.lerp(far_colour,clampf(float(chunk_num) / maxf(float(chunks.size() - 1), 1.0),0.0,1.0))
+			chunk.colour = near_colour.lerp(far_colour,clampf(float(chunk_num) / maxf(float(chunks.size() - 1), 1.0), 0.0, 1.0))
 			chunk.group = chunk.Group.MID
 		else:
 			chunk.target_direction = chunk.global_position.direction_to(target.global_position)
