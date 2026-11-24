@@ -1,4 +1,3 @@
-
 extends RigidBody3D
 
 @onready var mesh: MeshInstance3D = $mesh
@@ -286,6 +285,7 @@ func _ready() -> void:
 	mesh.material_override = material
 
 	radius = collision.shape.radius
+
 
 	can_sleep = false
 	contact_monitor = true
