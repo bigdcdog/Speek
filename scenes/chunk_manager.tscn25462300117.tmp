@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bm1x6ywt7d3ui"]
+
+[ext_resource type="Script" uid="uid://djuxb08dcuuuy" path="res://scripts/chunk_manager.gd" id="1_0oixa"]
+[ext_resource type="Script" uid="uid://ny4j5xlefqis" path="res://scripts/target.gd" id="1_1wyt4"]
+[ext_resource type="Script" uid="uid://2y8rnp2f3q8o" path="res://scripts/camera_holder.gd" id="2_ixyoq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yf5fn"]
+
+[node name="chunk_manager" type="Node3D" unique_id=1375283603]
+script = ExtResource("1_0oixa")
+near_end = 10
+mid_end = 40
+chunk_mid_size = 10
+near_colour = Color(0.94509804, 0.92156863, 0.8666667, 1)
+far_colour = Color(0.5568628, 0, 0, 1)
+
+[node name="target" type="CharacterBody3D" parent="." unique_id=1248111874]
+script = ExtResource("1_1wyt4")
+
+[node name="collision" type="CollisionShape3D" parent="target" unique_id=1826676139]
+shape = SubResource("SphereShape3D_yf5fn")
+
+[node name="camera_holder" type="SpringArm3D" parent="target" unique_id=1784241313]
+collision_mask = 2
+spring_length = 10.0
+script = ExtResource("2_ixyoq")
+
+[node name="camera" type="Camera3D" parent="target/camera_holder" unique_id=71913040]

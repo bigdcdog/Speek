@@ -33,10 +33,10 @@ extends RigidBody3D
 @export var adhesion_strength := 20.0
 @export var surface_damping := 8.0
 
-var radius := 0.0
-
 var material := StandardMaterial3D.new()
 var colour := Color.WHITE
+
+var radius := 0.0
 
 var integrity := 0
 var wall_integrity := 0
@@ -165,12 +165,10 @@ func cohesion(state: PhysicsDirectBodyState3D) -> void:
 	if enable_recall and nearest != null and nearest_distance > recall_distance:
 		recall(state, nearest)
 
-
 func recall(state: PhysicsDirectBodyState3D, to) -> void:
 	state.transform.origin = to.global_position + Vector3.UP * radius * 2.0
 	state.linear_velocity = to.linear_velocity
 	state.angular_velocity = Vector3.ZERO
-
 
 func adhesion(state: PhysicsDirectBodyState3D) -> void:
 	if surface_normal == Vector3.ZERO:
@@ -179,7 +177,6 @@ func adhesion(state: PhysicsDirectBodyState3D) -> void:
 	var normal_velocity: Vector3 = (surface_normal * state.linear_velocity.dot(surface_normal))
 	var tangent_velocity: Vector3 = (state.linear_velocity - normal_velocity)
 	state.apply_central_force(-tangent_velocity * surface_damping)
-
 
 func drive(state: PhysicsDirectBodyState3D, chunk_scale: float) -> void:
 	if integrity <= 0:
@@ -193,13 +190,11 @@ func drive(state: PhysicsDirectBodyState3D, chunk_scale: float) -> void:
 func far(state: PhysicsDirectBodyState3D) -> void:
 	if supporting:
 		state.linear_velocity *= slide
-	
 	drive(state, follow_scale)
 
 func mid(state: PhysicsDirectBodyState3D) -> void:
 	if supporting:
 		state.linear_velocity *= grip
-	
 	drive(state, carry_scale)
 
 func near(state: PhysicsDirectBodyState3D) -> void:
@@ -207,21 +202,21 @@ func near(state: PhysicsDirectBodyState3D) -> void:
 		if target_distance < hold_distance():
 			state.linear_velocity *= 0.0
 			return
-	
 		state.linear_velocity *= grip
-	
 	drive(state, reach_scale)
 
 func _exit_tree() -> void:
 	for link in links.duplicate():
 		unlink_from(link)
-	
 	links.clear()
 	rests.clear()
 	gains.clear()
 
 func _ready() -> void:
+	material = material.duplicate()
 	mesh.material_override = material
+	
+	material.albedo_color = colour
 
 func _physics_process(delta: float) -> void:
 	timer += delta

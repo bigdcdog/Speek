@@ -1,4 +1,3 @@
-
 extends Node3D
 
 @onready var target: CharacterBody3D = $target
@@ -13,7 +12,7 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 
 @export_group("chunk group sizes")
 @export var near_end := 20
-@export var mid_end := 100
+@export var mid_end := 80
 @export var chunk_mid_size := 20
 
 @export_group("chunk visuals")
