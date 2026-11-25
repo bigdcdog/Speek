@@ -7,13 +7,13 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 @export_category("chunk_settings")
 
 @export_group("chunk initialisation")
-@export var chunk_count := 100
+@export var chunk_count := 50
 @export var spawn_position := Vector3(0.0, 1.0, 0.0)
 
 @export_group("chunk group sizes")
-@export var near_end := 20
-@export var mid_end := 80
-@export var chunk_mid_size := 20
+@export var near_end := 10
+@export var mid_end := 40
+@export var chunk_mid_size := 10
 
 @export_group("chunk visuals")
 @export var near_colour := Color.hex(0xf1ecddff)
