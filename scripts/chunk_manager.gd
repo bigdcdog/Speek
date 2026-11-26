@@ -16,12 +16,11 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 @export var chunk_mid_size := 10
 
 @export_group("chunk visuals")
-@export var near_colour := Color.hex(0xf1ecddff)
-@export var far_colour := Color.hex(0x8b0000ff)
 @export var chunk_radius = 0.2
 
 @export_group("chunk links")
 @export var max_connections := 5
+@export var rest_length_distance := 0.0
 @export var link_create_multiplier := 3.0
 @export var link_break_multiplier := 3.0
 @export var topology_interval := 0.2
@@ -73,7 +72,7 @@ func update_mesh() -> void:
 			continue
 		if connections[b] >= max_connections:
 			continue
-		var rest_length: float = a.radius + b.radius
+		var rest_length: float = a.radius + b.radius + rest_length_distance
 		a.link_to(b, rest_length)
 		connections[a] += 1
 		connections[b] += 1
@@ -112,19 +111,16 @@ func assign_targets() -> void:
 			var target_chunk = chunks[target_index]
 			chunk.target_direction = chunk.global_position.direction_to(target_chunk.global_position)
 			chunk.target_distance = chunk.global_position.distance_to(target_chunk.global_position)
-			chunk.colour = far_colour
 			chunk.group = chunk.Group.FAR
 		elif chunk_num >= near_end:
 			var target_index: int = int(float(chunk_num) / float(chunk_mid_size))
 			var target_chunk = chunks[target_index]
 			chunk.target_direction = chunk.global_position.direction_to(target_chunk.global_position)
 			chunk.target_distance = chunk.global_position.distance_to(target_chunk.global_position)
-			chunk.colour = near_colour.lerp(far_colour,clampf(float(chunk_num) / maxf(float(chunks.size() - 1), 1.0), 0.0, 1.0))
 			chunk.group = chunk.Group.MID
 		else:
 			chunk.target_direction = chunk.global_position.direction_to(target.global_position)
 			chunk.target_distance = chunk.global_position.distance_to(target.global_position)
-			chunk.colour = near_colour
 			chunk.group = chunk.Group.NEAR
 		chunk.pick_base()
 
@@ -140,6 +136,7 @@ func _physics_process(delta: float) -> void:
 	
 	if topology_timer >= topology_interval:
 		topology_timer = 0.0
+		spawn_chunk(0)
 		update_mesh()
 	
 	assign_targets()

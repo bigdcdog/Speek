@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://crsagl27qfd2w"]
+
+[ext_resource type="Script" uid="uid://6mu1nm2ilynb" path="res://scripts/chunk.gd" id="1_jas4a"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g4v7s"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jtw3q"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_g4v7s"]
+material = SubResource("StandardMaterial3D_jtw3q")
+radius = 0.2
+height = 0.4
+
+[node name="chunk" type="RigidBody3D" unique_id=239859342 groups=["speek"]]
+contact_monitor = true
+max_contacts_reported = 8
+script = ExtResource("1_jas4a")
+
+[node name="collision" type="CollisionShape3D" parent="." unique_id=334336060]
+shape = SubResource("SphereShape3D_g4v7s")
+
+[node name="mesh" type="MeshInstance3D" parent="." unique_id=1814504515]
+mesh = SubResource("SphereMesh_g4v7s")

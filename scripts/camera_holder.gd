@@ -1,13 +1,12 @@
 extends SpringArm3D
 
-@onready var slime_chunk_manager: Node3D = $".."
 @onready var target: CharacterBody3D = $".."
 
 @export var mouse_sensitivity_drag: float = 0.004
 @export var mouse_sensitivity_zoom: float = 0.04
 @export var mouse_zoom_intensity: float = 2.0
 @export var min_zoom: float = 1.0
-@export var max_zoom: float = 7.0
+@export var max_zoom: float = 10.0
 
 var dragging: bool = false
 var zoom_distance_target: float = 10.0

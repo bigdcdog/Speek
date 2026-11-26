@@ -5,10 +5,11 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_g4v7s"]
 radius = 0.2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jtw3q"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jas4a"]
+albedo_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_g4v7s"]
-material = SubResource("StandardMaterial3D_jtw3q")
+[sub_resource type="SphereMesh" id="SphereMesh_jas4a"]
+material = SubResource("StandardMaterial3D_jas4a")
 radius = 0.2
 height = 0.4
 
@@ -16,10 +17,9 @@ height = 0.4
 contact_monitor = true
 max_contacts_reported = 8
 script = ExtResource("1_jas4a")
-strength = 300.0
 
 [node name="collision" type="CollisionShape3D" parent="." unique_id=334336060]
 shape = SubResource("SphereShape3D_g4v7s")
 
-[node name="mesh" type="MeshInstance3D" parent="." unique_id=1814504515]
-mesh = SubResource("SphereMesh_g4v7s")
+[node name="mesh" type="MeshInstance3D" parent="." unique_id=1963228092]
+mesh = SubResource("SphereMesh_jas4a")

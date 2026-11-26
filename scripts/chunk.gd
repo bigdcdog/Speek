@@ -1,18 +1,18 @@
 extends RigidBody3D
 
-@onready var mesh: MeshInstance3D = $mesh
 @onready var collision: CollisionShape3D = $collision
+@onready var mesh: MeshInstance3D = $mesh
 
-@export_category("chunk_physics")
+@export_category("chunk physics")
 
 @export_group("chunk movement")
-@export var max_distance := 5.0
-@export var strength := 100.0
+@export var max_distance := 2.0
+@export var strength := 200.0
 @export var max_speed := 10.0
 
 @export_group("chunk integrity")
 @export var integrity_loss := 1
-@export var integrity_gain := 10
+@export var integrity_gain := 5
 
 @export_group("chunk connection")
 @export var reach_scale := 1.0
@@ -32,9 +32,6 @@ extends RigidBody3D
 @export_group("chunk surface")
 @export var adhesion_strength := 20.0
 @export var surface_damping := 8.0
-
-var material := StandardMaterial3D.new()
-var colour := Color.WHITE
 
 var radius := 0.0
 
@@ -67,7 +64,7 @@ var target_direction := Vector3.ZERO
 var target_distance := 0.0
 
 var surface_normal := Vector3.ZERO
-var timer := 0.0
+var colour_timer := 0.0
 
 func link_to(other, rest_length: float) -> void:
 	links.append(other)
@@ -183,8 +180,7 @@ func drive(state: PhysicsDirectBodyState3D, chunk_scale: float) -> void:
 		return
 	var hold: float = hold_distance()
 	var multiplier: float = pow(clampf((target_distance - hold) / maxf(max_distance - hold, 0.001), 0.0, 1.0), 0.5)
-	var held: float = clampf(
-		float(integrity) / maxf(float(integrity_gain), 0.001), 0.0, 1.0)
+	var held: float = clampf(float(integrity) / maxf(float(integrity_gain), 0.001), 0.0, 1.0)
 	state.apply_central_force(target_direction * multiplier * held * strength * chunk_scale)
 
 func far(state: PhysicsDirectBodyState3D) -> void:
@@ -211,19 +207,6 @@ func _exit_tree() -> void:
 	links.clear()
 	rests.clear()
 	gains.clear()
-
-func _ready() -> void:
-	material = material.duplicate()
-	mesh.material_override = material
-	
-	material.albedo_color = colour
-
-func _physics_process(delta: float) -> void:
-	timer += delta
-	
-	if timer > 1.0:
-		material.albedo_color = colour
-		timer = 0.0
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	capture_contacts(state)
