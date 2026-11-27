@@ -7,7 +7,7 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 @export_category("chunk_settings")
 
 @export_group("chunk initialisation")
-@export var base_chunk_count := 50
+@export var base_chunk_count := 10
 @export var base_spawn_position := Vector3(0.0, 1.0, 0.0)
 @export var base_chunk_radius = 0.2
 @export var base_chunk_color : Color = Color.html("080808")
@@ -33,6 +33,7 @@ func spawn_chunk(chunk_radius, chunk_position, chunk_color) -> void:
 	chunk.position = chunk_position
 	chunk.collision.shape = chunk.collision.shape.duplicate()
 	chunk.radius = chunk_radius
+	chunk.mass = chunk_radius * 5.0
 	chunk.collision.shape.radius = chunk_radius
 	chunk.mesh.mesh.radius = chunk_radius
 	chunk.mesh.mesh.height = chunk_radius * 2

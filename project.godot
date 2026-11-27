@@ -14,6 +14,10 @@ config/name="bounce back"
 run/main_scene="uid://cb12x0f4n8e4s"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
+[autoload]
+
+global="*uid://ceyju5qj4dmx8"
+
 [display]
 
 window/stretch/mode="canvas_items"
