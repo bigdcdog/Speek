@@ -16,7 +16,7 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 @export var chunk_mid_size := 10
 
 @export_group("chunk visuals")
-@export var chunk_radius = 0.2
+@export var base_chunk_radius = 0.2
 
 @export_group("chunk links")
 @export var max_connections := 5
@@ -28,11 +28,10 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 var chunks: Array = []
 var topology_timer := 0.0
 
-func spawn_chunk(chunk_name: int) -> void:
+func spawn_chunk(chunk_radius, chunk_position) -> void:
 	var chunk = CHUNK_SCENE.instantiate()
-	chunk.name = "chunk %s" % chunk_name
 	add_child(chunk)
-	chunk.position = spawn_position
+	chunk.position = chunk_position
 	chunk.collision.shape = chunk.collision.shape.duplicate()
 	chunk.radius = chunk_radius
 	chunk.collision.shape.radius = chunk_radius
@@ -41,8 +40,8 @@ func spawn_chunk(chunk_name: int) -> void:
 	chunks.append(chunk)
 
 func update_mesh() -> void:
-	var create_distance: float = chunk_radius * link_create_multiplier
-	var break_distance: float = chunk_radius * link_break_multiplier
+	var create_distance: float = base_chunk_radius * link_create_multiplier
+	var break_distance: float = base_chunk_radius * link_break_multiplier
 	for chunk in chunks:
 		for link in chunk.links.duplicate():
 			if not is_instance_valid(link):
@@ -125,8 +124,8 @@ func assign_targets() -> void:
 		chunk.pick_base()
 
 func _ready() -> void:
-	for i in range(chunk_count):
-		spawn_chunk(i)
+	for i in range(100):
+		spawn_chunk(base_chunk_radius, spawn_position)
 	update_mesh()
 	assign_targets()
 	update_integrity()
@@ -136,7 +135,6 @@ func _physics_process(delta: float) -> void:
 	
 	if topology_timer >= topology_interval:
 		topology_timer = 0.0
-		spawn_chunk(0)
 		update_mesh()
 	
 	assign_targets()
