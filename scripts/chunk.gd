@@ -26,8 +26,6 @@ extends RigidBody3D
 @export_range(0.0, 1.0) var link_stiffness := 0.5
 @export_range(0.0, 1.0) var link_damping := 0.8
 @export var max_pull := 300.0
-@export var recall_distance := 8.0
-@export var enable_recall := false
 
 @export_group("chunk surface")
 @export var adhesion_strength := 20.0
@@ -141,7 +139,6 @@ func cohesion(state: PhysicsDirectBodyState3D) -> void:
 	var spring: float = link_stiffness / (state.step * state.step)
 	var damper: float = link_damping / state.step
 	var pull := Vector3.ZERO
-	var nearest = null
 	var nearest_distance: float = INF
 	for i in range(links.size()):
 		var link = links[i]
@@ -151,7 +148,6 @@ func cohesion(state: PhysicsDirectBodyState3D) -> void:
 		var distance: float = offset.length()
 		if distance < nearest_distance:
 			nearest_distance = distance
-			nearest = link
 		if distance < 0.0001:
 			continue
 		var direction: Vector3 = offset / distance
@@ -159,13 +155,6 @@ func cohesion(state: PhysicsDirectBodyState3D) -> void:
 		var separating: float = (link.linear_velocity - state.linear_velocity).dot(direction)
 		pull += direction * (stretch * spring + separating * damper) * gains[i]
 	state.apply_central_force(pull.limit_length(max_pull))
-	if enable_recall and nearest != null and nearest_distance > recall_distance:
-		recall(state, nearest)
-
-func recall(state: PhysicsDirectBodyState3D, to) -> void:
-	state.transform.origin = to.global_position + Vector3.UP * radius * 2.0
-	state.linear_velocity = to.linear_velocity
-	state.angular_velocity = Vector3.ZERO
 
 func adhesion(state: PhysicsDirectBodyState3D) -> void:
 	if surface_normal == Vector3.ZERO:
@@ -180,6 +169,8 @@ func drive(state: PhysicsDirectBodyState3D, chunk_scale: float) -> void:
 		return
 	var hold: float = hold_distance()
 	var multiplier: float = pow(clampf((target_distance - hold) / maxf(max_distance - hold, 0.001), 0.0, 1.0), 0.5)
+	if target_distance > max_distance:
+		multiplier = 0.0
 	var held: float = clampf(float(integrity) / maxf(float(integrity_gain), 0.001), 0.0, 1.0)
 	state.apply_central_force(target_direction * multiplier * held * strength * chunk_scale)
 
@@ -207,6 +198,15 @@ func _exit_tree() -> void:
 	links.clear()
 	rests.clear()
 	gains.clear()
+
+func _ready() -> void:
+	var new_mesh := SphereMesh.new()
+
+	var new_material := StandardMaterial3D.new()
+
+
+	new_mesh.material = new_material
+	mesh.mesh = new_mesh
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	capture_contacts(state)

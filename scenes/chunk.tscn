@@ -17,6 +17,7 @@ height = 0.4
 contact_monitor = true
 max_contacts_reported = 8
 script = ExtResource("1_jas4a")
+max_distance = 5.0
 
 [node name="collision" type="CollisionShape3D" parent="." unique_id=334336060]
 shape = SubResource("SphereShape3D_g4v7s")

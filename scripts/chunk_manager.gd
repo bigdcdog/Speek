@@ -7,16 +7,15 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 @export_category("chunk_settings")
 
 @export_group("chunk initialisation")
-@export var chunk_count := 50
-@export var spawn_position := Vector3(0.0, 1.0, 0.0)
+@export var base_chunk_count := 50
+@export var base_spawn_position := Vector3(0.0, 1.0, 0.0)
+@export var base_chunk_radius = 0.2
+@export var base_chunk_color : Color = Color.html("080808")
 
 @export_group("chunk group sizes")
 @export var near_end := 10
 @export var mid_end := 40
 @export var chunk_mid_size := 10
-
-@export_group("chunk visuals")
-@export var base_chunk_radius = 0.2
 
 @export_group("chunk links")
 @export var max_connections := 5
@@ -28,7 +27,7 @@ const CHUNK_SCENE = preload("res://scenes/chunk.tscn")
 var chunks: Array = []
 var topology_timer := 0.0
 
-func spawn_chunk(chunk_radius, chunk_position) -> void:
+func spawn_chunk(chunk_radius, chunk_position, chunk_color) -> void:
 	var chunk = CHUNK_SCENE.instantiate()
 	add_child(chunk)
 	chunk.position = chunk_position
@@ -37,17 +36,17 @@ func spawn_chunk(chunk_radius, chunk_position) -> void:
 	chunk.collision.shape.radius = chunk_radius
 	chunk.mesh.mesh.radius = chunk_radius
 	chunk.mesh.mesh.height = chunk_radius * 2
+	chunk.mesh.mesh.material.albedo_color = chunk_color
 	chunks.append(chunk)
 
 func update_mesh() -> void:
-	var create_distance: float = base_chunk_radius * link_create_multiplier
-	var break_distance: float = base_chunk_radius * link_break_multiplier
 	for chunk in chunks:
 		for link in chunk.links.duplicate():
 			if not is_instance_valid(link):
 				chunk.unlink_from(link)
 				continue
 			var distance: float = chunk.global_position.distance_to(link.global_position)
+			var break_distance: float = (chunk.radius + link.radius) * link_break_multiplier
 			if distance > break_distance:
 				chunk.unlink_from(link)
 	var connections: Dictionary = {}
@@ -61,6 +60,7 @@ func update_mesh() -> void:
 			if a.links.has(b):
 				continue
 			var distance: float = a.global_position.distance_to(b.global_position)
+			var create_distance: float = (a.radius + b.radius) * link_create_multiplier
 			if distance <= create_distance:
 				candidates.append({"a": a,"b": b,"distance": distance})
 	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["distance"] < b["distance"])
@@ -124,8 +124,8 @@ func assign_targets() -> void:
 		chunk.pick_base()
 
 func _ready() -> void:
-	for i in range(100):
-		spawn_chunk(base_chunk_radius, spawn_position)
+	for i in range(base_chunk_count):
+		spawn_chunk(base_chunk_radius, base_spawn_position, base_chunk_color)
 	update_mesh()
 	assign_targets()
 	update_integrity()
