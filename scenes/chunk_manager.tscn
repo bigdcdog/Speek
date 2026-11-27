@@ -3,9 +3,22 @@
 [ext_resource type="Script" uid="uid://djuxb08dcuuuy" path="res://scripts/chunk_manager.gd" id="1_0oixa"]
 [ext_resource type="Script" uid="uid://ny4j5xlefqis" path="res://scripts/target.gd" id="1_1wyt4"]
 [ext_resource type="Script" uid="uid://2y8rnp2f3q8o" path="res://scripts/camera_holder.gd" id="2_ixyoq"]
+[ext_resource type="Shader" uid="uid://c083y6h70b2ci" path="res://resources/shaders/screen.gdshader" id="4_asd8b"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_yf5fn"]
 radius = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yf5fn"]
+render_priority = 0
+shader = ExtResource("4_asd8b")
+shader_parameter/pixel_size = 2.0
+shader_parameter/levels = 1000.0
+shader_parameter/gamma = Vector2(0.01, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_g4v7s"]
+material = SubResource("ShaderMaterial_yf5fn")
+flip_faces = true
+size = Vector2(2, 2)
 
 [node name="chunk_manager" type="Node3D" unique_id=1375283603]
 script = ExtResource("1_0oixa")
@@ -27,3 +40,7 @@ spring_length = 7.0
 script = ExtResource("2_ixyoq")
 
 [node name="camera" type="Camera3D" parent="target/camera_holder" unique_id=71913040]
+
+[node name="screen_shader" type="MeshInstance3D" parent="target/camera_holder/camera" unique_id=740411271]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_g4v7s")

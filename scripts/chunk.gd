@@ -62,7 +62,6 @@ var target_direction := Vector3.ZERO
 var target_distance := 0.0
 
 var surface_normal := Vector3.ZERO
-var colour_timer := 0.0
 
 func link_to(other, rest_length: float) -> void:
 	links.append(other)
@@ -201,10 +200,8 @@ func _exit_tree() -> void:
 
 func _ready() -> void:
 	var new_mesh := SphereMesh.new()
-
 	var new_material := StandardMaterial3D.new()
-
-
+	
 	new_mesh.material = new_material
 	mesh.mesh = new_mesh
 

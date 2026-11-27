@@ -126,6 +126,10 @@ func assign_targets() -> void:
 func _ready() -> void:
 	for i in range(base_chunk_count):
 		spawn_chunk(base_chunk_radius, base_spawn_position, base_chunk_color)
+	for i in range(20):
+		spawn_chunk(base_chunk_radius, Vector3(5,5,5), Color.html("FF79BF"))
+		spawn_chunk(base_chunk_radius, Vector3(5,5,5), Color.html("FFE6CC"))
+		spawn_chunk(base_chunk_radius, Vector3(5,5,5), Color.html("5A3B3C"))
 	update_mesh()
 	assign_targets()
 	update_integrity()
